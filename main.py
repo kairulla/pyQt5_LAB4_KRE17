@@ -4,6 +4,7 @@
 import sys
 
 from PyQt5 import QtGui, QtCore
+from PyQt5.QtCore import QItemSelectionModel
 from PyQt5.QtWidgets import QDialog, QApplication, QTableWidgetItem
 from PyQt5.uic import loadUi
 import math
@@ -46,6 +47,7 @@ class Launcher(QDialog):
             for col, j in enumerate(i):
                 self.qTableWidget.setItem(row, col, QTableWidgetItem(str(j)))
 
+
         i = 0
         max_value = array[1][i]
         max_i = i
@@ -65,18 +67,75 @@ class Launcher(QDialog):
 
 
     def qPushButtonSolverOnClick(self):
-        array = self.array_global.copy()
-        max_value = self.max_value
-        max_i = self.max_i
-        if (max_value > array[2][0]):
-            temp = array[2][0]
-            array[2][0] = max_value
-            array[1][max_i] = temp
+        # array = self.array_global.copy()
+        # max_value = self.max_value
+        # max_i = self.max_i
+        # if (max_value > array[2][0]):
+        #     temp = array[2][0]
+        #     array[2][0] = max_value
+        #     array[1][max_i] = temp
+        #
+        #     for row, i in enumerate(array):
+        #         for col, j in enumerate(i):
+        #             self.qTableWidget.setItem(row, col, QTableWidgetItem(str(j)))
+        try:
+            b = []
+            for i in range(4):
+                sub_array = []
+                for j in range(5):
+                    try:
+                        temp = int(self.qTableWidget.item(i, j).text())
+                    except:
+                        self.qTableWidget.setItem(i, j, QTableWidgetItem("???"))
+                    sub_array.append(temp)
+                b.append(sub_array)
+            # a = self.qTableWidget.item(select.selectedRows(), select.selectedColums()).text()
+            # a = self.qTableWidget.item(0, 0).text()
 
-            for row, i in enumerate(array):
-                for col, j in enumerate(i):
-                    self.qTableWidget.setItem(row, col, QTableWidgetItem(str(j)))
+            array = b.copy()
+            max_value = self.max_value
+            max_i = self.max_i
+            if (max_value > array[2][0]):
+                temp = array[2][0]
+                array[2][0] = max_value
+                array[1][max_i] = temp
 
+                for row, i in enumerate(array):
+                    for col, j in enumerate(i):
+                        self.qTableWidget.setItem(row, col, QTableWidgetItem(str(j)))
+
+            print(b)
+
+
+            n = 4
+            m = 5
+            max_number = 100
+
+            array = b
+
+            i = 0
+            max_value = array[1][i]
+            max_i = i
+            for i, j in enumerate(array[1]):
+                # print("i=", i)
+                if j > max_value:
+                    max_value = j
+                    max_i = i
+            self.qLabelMaxItemValue.setText("Максимальный элемент = %s" % max_value)
+            print("max_value=", max_value)
+            print("max_i=", max_i)
+
+            if (max_value > array[2][0]):
+                temp = array[2][0]
+                array[2][0] = max_value
+                array[1][max_i] = temp
+
+                for row, i in enumerate(array):
+                    for col, j in enumerate(i):
+                        self.qTableWidget.setItem(row, col, QTableWidgetItem(str(j)))
+
+        except:
+            self.qLabelMaxItemValue.setText("Ошибка")
 
 if __name__ == '__main__':
     # Основная часть программы
